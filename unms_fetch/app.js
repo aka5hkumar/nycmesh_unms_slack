@@ -21,7 +21,7 @@ fetch("https://"+process.env.ip+"/nms/api/v2.1/devices",
 //.then(function(json){
 .then(json => {
     let output = JSON.stringify(json)
-    fs.writeFile('devices.json', output, (err) => {
+    fs.writeFile('../output/devices.json', output, (err) => {
     if (err) console.log(err);
     });
 })
