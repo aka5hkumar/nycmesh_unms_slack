@@ -28,4 +28,16 @@ function getData(endpoint){ //get the JSON devices file
       console.log(err);
   });
 };
-getData('devices')
+//getData('devices')
+
+function parse(){
+  var jsonFile = fs.readFileSync("../output/devices.json");
+  dataFile=JSON.parse(jsonFile);
+  for (var num in dataFile){
+    console.log(dataFile[num].overview.lastSeen)
+  }
+  console.log(dataFile[1].overview.lastSeen)
+};
+
+
+parse()
