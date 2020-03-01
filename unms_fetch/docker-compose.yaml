@@ -1,0 +1,15 @@
+version: '0.1'
+
+services:
+ db:
+  image: postgres
+  restart: always
+  environment:
+   POSTGRES_USER: ${postgres_user}
+   POSTGRES_PASSWORD: ${postgres_pw} 
+   POSTGRES_DB: postgres
+  volumes:
+    - ./postgres-data:/home/pi/nycmesh_unms_slack/output/postgres
+  ports:
+    - 5432:5432
+

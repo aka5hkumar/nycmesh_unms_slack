@@ -34,9 +34,9 @@ function parse(){
   var jsonFile = fs.readFileSync("../output/devices.json");
   dataFile=JSON.parse(jsonFile);
   for (var num in dataFile){
-    console.log(dataFile[num].overview.lastSeen)
+    var date = new Date(dataFile[num].overview.lastSeen);
+    console.log(date,'\t', dataFile[num].identification.id,'\t', dataFile[num].identification.hostname)
   }
-  console.log(dataFile[1].overview.lastSeen)
 };
 
 
