@@ -1,28 +1,26 @@
-import pandas as pd
-import json
-with open('devices.json') as f:
-  jsonfile = json.load(f)
+import requests
+import routeros_api
+from dotenv import load_dotenv
+load_dotenv()
+import os 
+import urllib3
+#requests.packages.urllib3.disable_warnings() 
 
-df = pd.DataFrame(
-    [
-    data['identification']['id'], 
-    data['identification']['name'],
-    data['identification']['role'],
-    data['overview']['status'],
-    data['overview']['canUpgrade'],
-    data['overview']['downlinkCapacity'],
-    data['overview']['uplinkCapacity'],
-    data['overview']['uptime'],
-    ] 
-    for data in jsonfile)
-    
-# print(jsonfile[0]['identification']['id'])
-# print(jsonfile[0]['identification']['name'])
-# print(jsonfile[0]['identification']['role'])
-# print(jsonfile[0]['overview']['status'])
-# print(jsonfile[0]['overview']['canUpgrade'])
-# print(jsonfile[0]['overview']['downlinkCapacity'])
-# print(jsonfile[0]['overview']['uplinkCapacity'])
-# print(jsonfile[0]['overview']['uptime'])
+def envCheck():
+  print(os.environ.get('test-api-token'))
 
-df.to_csv('devices.csv', index=False)
+def get_unms(host,api,route):
+  headers = {'User-Agent': 'unms-status',
+           'X-Auth-Token': api
+           }
+  r = requests.get("https://"+host+"/nms/api/v2.1/"+route, headers=headers, verify=False)
+  return (r.json())
+if __name__ == "__main__":
+    #envCheck()
+    devices = get_unms(os.environ.get("unms_host"), os.environ.get('unms_key'), 'devices')
+    tempset=set()
+    for device in devices:
+      tempset.add((device['identification']['type']))
+    print(tempset)
+      
+   
