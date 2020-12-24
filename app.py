@@ -48,9 +48,7 @@ class Parse:
     ip_arr.append(ip)
     #make Multithreaded
     print(ip)
-    try:
-      connection = routeros_api.RouterOsApiPool(ip, username=os.environ.get('omni_user'), password=os.environ.get('omni_pass'), plaintext_login=True)
-      api = connection.get_api()
+    def mikrotikConnect(ip):
       list_address = api.get_resource('/ip/dhcp-server/lease')
       json_response = list_address.get()
       print(json_response)
@@ -59,8 +57,17 @@ class Parse:
           self.interface.add(interface['host-name'])
         except KeyError:
           print(KeyError)
-    except:   
-      print('routeros Error')
+    try:
+      connection = routeros_api.RouterOsApiPool(ip, username=os.environ.get('omni_user'), password=os.environ.get('omni_pass'), plaintext_login=True)
+      api = connection.get_api()
+      mikrotikConnect(ip)
+    except:
+      try: 
+        connection = routeros_api.RouterOsApiPool(ip, username=os.environ.get('omni_user'), password=os.environ.get('omni_pass_2'), plaintext_login=True)
+        api = connection.get_api()
+        mikrotikConnect(ip)
+      except:
+        print('RouterOS Error')
 
 def main():
   Parsed = Parse()
